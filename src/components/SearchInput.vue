@@ -62,7 +62,7 @@ const getWeather = async (id) => {
 
 <template>
   <div>
-    {{ searchTerm.query }}
+    <!-- {{ searchTerm.query }} -->
     <!-- search field -->
     <form>
       <div class="bg-white border border-indigo-600/30 rounded-lg shadow-lg flex items-center">

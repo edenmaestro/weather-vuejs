@@ -1,6 +1,7 @@
 <script setup>
 import SearchInput from './components/SearchInput.vue';
 import { ref } from 'vue';
+import WeatherCard from './components/WeatherCard.vue';
 
 // On va utilser ses deux variables pour afficher le resultat cliquée
 const places = ref([])   
@@ -31,11 +32,14 @@ const addPlace = (data) => {
           </div>
 
           <!-- Carte Meteo -->
-           <div>
-                <p v-for="place in places">
-                    {{ place.location.name }}
-                </p>
+           <!-- Pour chaque place dans les places, on veut les idx comme key -->
+            <div class="grid grid-cols-2 gap-4">
+                <div v-for=" (place,idx) in places" :key="idx">
+            <!-- On loop les places -->
+                <WeatherCard :place="place" />
            </div>
+            </div>
+           
 
     </main>
 </template>
