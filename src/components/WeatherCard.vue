@@ -9,12 +9,19 @@ defineProps({
     place: Object
 })
 
+const emit = defineEmits(['delete-place'])
+
 const showDetail = ref(false)
+
+const removePlace = (placeName) => {
+    emit ('delete-place', placeName )
+    showDetail.value = false
+}
 
 </script>
 
 <template>
-  <div class="text-white p-10 rounded-lg shadow-lg gap-6 mb-6 relative overflow-hidden bg-blue-500">
+  <div :class="place.current.is_day === 1 ? 'bg-day': 'bg-night'" class="text-white p-10 rounded-lg shadow-lg gap-6 mb-6 relative overflow-hidden">
      <!-- Pour le temps et l'endroit -->
     <div class="mb-2 flex justify-between items-center">
       <div class="flex items-center justify-center gap-2">
@@ -44,13 +51,49 @@ const showDetail = ref(false)
     </div>
 
     <!-- info -->
-    <div v-show="showDetail">
-        <WeatherInfo :place="place"  @close-info="showDetail = false"/>
-    </div>
+     <Transition name="fade">
+        <div v-show="showDetail">
+            <WeatherInfo :place="place"  
+            @close-info="showDetail = false" 
+            @remove-place="removePlace(place.location.name)"/>
+        </div>
+     </Transition>
+    
 
     <!-- forecast btn -->
     <div class="flex justify-end items-center gap-1 mt-10">
-      <button @click="showDetail = true">More <i class="fa-solid fa-arrow-right text-sm -mb-px"></i></button>
+      <button @click="showDetail = true">
+        More <i class="fa-solid fa-arrow-right text-sm -mb-px">
+        </i>
+    </button>
     </div>
   </div>
 </template>
+
+
+
+<style scoped>
+.bg-day {
+    background-color: #8ec5fc;
+    background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+}
+
+.bg-night{
+    background-color: #07223d;
+    background-image: linear-gradient(62deg, #0a2a4a 0%, #270845 100%);
+}
+
+
+
+/* we will explain what these classes do next! */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+</style>
